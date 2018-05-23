@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+     <title>Alarm</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+   </head>
+  <body>
+    <form action="/update" method="post">
+      <div>
+        <label>
+          Alarm time:
+          <input name="alarmTime" type="time" value=";timeValue;">
+        </label>
+      </div>
+      <div>
+        <label>
+          Sunrise duration (minutes):
+          <input name="durationMins" type="text" value=";durationValue;">
+        </label>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>

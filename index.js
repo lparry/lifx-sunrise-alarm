@@ -76,7 +76,7 @@ function go(durationMins) {
 }
 
 function shouldRunNow(config) {
-  const startTime = dateMath.add(new Date(), config.durationMins, "minutes")
+  const startTime = dateMath.add(new Date(), parseInt(config.durationMins, 10), "minutes")
   const startTimeStr = `${startTime.getHours()}:${startTime.getMinutes()}`
   return config.alarmTime === startTimeStr
 }
@@ -85,5 +85,5 @@ const config = JSON.parse(fs.readFileSync("config.json", "utf8"))
 
 if (shouldRunNow(config)) {
   console.log("starting sunrise")
-  go(config.durationMins)
+  go(parseInt(config.durationMins, 10))
 }
