@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "install": "sed  -e 's/kelvin < 2500/kelvin < 1500/' -e 's/|| duration > 65535//' -i ''  ./node_modules/node-lifx-lan/lib/lifx-lan-composer.js",
+    "install": "sed  -e 's/kelvin < 2500/kelvin < 1500/' -e 's/|| duration > 65535//' -i  ./node_modules/node-lifx-lan/lib/lifx-lan-composer.js",
     "start": "node index.js",
     "web": "node server.js"
   },
