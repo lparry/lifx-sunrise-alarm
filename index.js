@@ -1,5 +1,7 @@
 // Create a LifxLan object
 const Lifx  = require('node-lifx-lan');
+var dateMath = require('date-arithmetic')
+
 
 const fs = require('fs')
 
@@ -46,8 +48,8 @@ async function turnOff() {
   });
 }
 
-async function sunrise({duration}) {
-  const t = duration / 4
+async function sunrise({durationMins}) {
+  const t = durationMins * 60 / 4
   await turnOn({k: 1500, b: 0.25, t})
   await setColor({k: 2500, b: 0.5, t })
   // await setColor({k: 5000, b: 0.75, t })
@@ -56,11 +58,11 @@ async function sunrise({duration}) {
 
 let retries = 0
 
-function go(duration) {
+function go(durationMins) {
   Lifx.discover().then(async () => {
     await turnOff()
     await sleep(2000)
-    await sunrise({ duration })
+    await sunrise({ durationMins })
   }).then(() => {
     console.log('Done!');
     Lifx.destroy()
@@ -68,16 +70,20 @@ function go(duration) {
     console.error(error);
     if (retries < 5) {
       retries = retries + 1
-      go(duration)
+      go(durationMins)
     }
   });
 }
 
+function shouldRunNow(config) {
+  const startTime = dateMath.add(new Date(), config.durationMins, "minutes")
+  const startTimeStr = `${startTime.getHours()}:${startTime.getMinutes()}`
+  return config.alarmTime === startTimeStr
+}
 
-const config = fs.readFileSync("config.json", "utf8")
+const config = JSON.parse(fs.readFileSync("config.json", "utf8"))
 
-const durationSecs = config.durationMins * 60
-
-console.log(config)
-
-//go(60)
+if (shouldRunNow(config)) {
+  console.log("starting sunrise")
+  go(config.durationMins)
+}
